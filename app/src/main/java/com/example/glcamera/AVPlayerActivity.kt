@@ -4,6 +4,7 @@ import android.media.*
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.Process
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.glcamera.player.decoder.AVDecoder
 import com.example.glcamera.player.decoder.AVSyncClock
 import com.example.glcamera.player.view.PlayerSurfaceView
+import java.io.File
 import java.nio.ByteBuffer
 
 
@@ -53,6 +55,10 @@ class AVPlayerActivity : AppCompatActivity() {
     private fun doDecoder(){
 
         var uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.demo_video)
+        //var path = Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera/a.mp4"
+      //  var file = File(path)
+       // var uri = Uri.fromFile(file)
+        Log.d("TAG", "doDecoder: $uri")
         mAVSyncClock = AVSyncClock()
         mAVSyncClock?.start()
 
