@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit
  * 使用的为第一种和第二种，音视频自身完成同步
  */
 class AVSyncClock {
-
     private val TIME_UNSET : Long = Long.MIN_VALUE+1
     private val TIME_END_OF_SOURCE = Long.MIN_VALUE
 
@@ -22,7 +21,7 @@ class AVSyncClock {
     /**
      * 播放速度
      */
-    private var mSpeed : Float = 1f
+    private var mSpeed = 1f
     /**
      * 运行基准时间
      */
@@ -36,8 +35,7 @@ class AVSyncClock {
      * 启动时钟
      */
     fun start(){
-        if(mStarted)
-            return
+        if(mStarted) return
         reset()
         mStarted = true
     }
@@ -60,13 +58,14 @@ class AVSyncClock {
      * 锁定
      */
     fun lock(positionUs : Long,diff : Long){
-        if (!mStarted) return
+        if (!mStarted) {
+            return
+        }
 
         if(mBasePositionUs == 0L)
             mBasePositionUs = positionUs
 
-        var speedPositionUs =((positionUs - mBasePositionUs) * (1f/mSpeed)).toLong()
-
+        var speedPositionUs =((positionUs - mBasePositionUs) * (1f / mSpeed)).toLong()
         var durationMs = usToMs(speedPositionUs) + diff
         var endTimeMs = mBaseElapsedMs + durationMs
         var sleepTimeMs = endTimeMs - SystemClock.elapsedRealtime()
@@ -82,6 +81,7 @@ class AVSyncClock {
     }
 
     fun setSpeed(speed : Float){
+        reset()
         this.mSpeed = speed
     }
     fun getSpeed() : Float{
@@ -93,7 +93,9 @@ class AVSyncClock {
         if(timeUs == TIME_UNSET || timeUs == TIME_END_OF_SOURCE)
             return timeUs
         else
-            return timeUs * 1000
+            return timeUs / 1000
     }
+
+
 
 }
