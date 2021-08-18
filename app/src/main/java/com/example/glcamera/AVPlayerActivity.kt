@@ -27,6 +27,7 @@ class AVPlayerActivity : AppCompatActivity() {
 
     /**
      * 视频解码及播放
+     *
      */
 
     private var mSurfaceView : PlayerSurfaceView? = null

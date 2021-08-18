@@ -12,6 +12,7 @@ import java.util.*
  *
  * 控制类
  * camera -> surfaceTexture -> oesTexture -> 屏幕
+ * 不用设置orientation 因为直接通过矩阵变换了
  */
 class CameraPresenter() : Camera.PreviewCallback{
 
@@ -35,6 +36,7 @@ class CameraPresenter() : Camera.PreviewCallback{
 
 
     }
+
 
     private fun getCameraId(faceOrBack : Int) : Int{
         val numbers = Camera.getNumberOfCameras()
@@ -90,6 +92,7 @@ class CameraPresenter() : Camera.PreviewCallback{
                 }
             }
             camera.parameters = parameters
+           // camera.setDisplayOrientation(90)
         }catch (e:Exception){
             e.printStackTrace()
         }

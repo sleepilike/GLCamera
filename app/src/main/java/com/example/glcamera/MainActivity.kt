@@ -53,7 +53,9 @@ class MainActivity : BaseActivity(), View.OnClickListener{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        requestPermission("请给予相机、存储权限，以便app正常工作",
+            null,
+            *arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
 
 
         setContentView(R.layout.activity_main)
@@ -82,9 +84,7 @@ class MainActivity : BaseActivity(), View.OnClickListener{
          * 录制完成
          */
 
-        requestPermission("请给予相机、存储权限，以便app正常工作",
-            null,
-            *arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+
 
     }
 

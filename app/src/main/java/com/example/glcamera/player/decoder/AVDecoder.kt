@@ -57,7 +57,7 @@ class AVDecoder (context: Context,uri: Uri,mimeType : String){
             return false
         }
 
-        var bufferInfo : MediaCodec.BufferInfo? = MediaCodec.BufferInfo()
+        var bufferInfo : BufferInfo? = BufferInfo()
         bufferInfo?.offset = 0
         bufferInfo?.presentationTimeUs = source.sampleTime
         bufferInfo?.size = sampleDataSize

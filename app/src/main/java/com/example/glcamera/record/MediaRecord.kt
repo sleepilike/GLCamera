@@ -29,7 +29,7 @@ class MediaRecord (context: Context,path:String,eglContext: EGLContext){
     private lateinit var mMediaCodec: MediaCodec
     private lateinit var mInputSurface: Surface
     private lateinit var mMediaMuxer : MediaMuxer
-    private lateinit var mHandler : Handler
+    private var mHandler : Handler? = null
     private lateinit var mEglBase : EGLBase
     private var isStart : Boolean = false
     private var index : Int = 0
@@ -45,7 +45,7 @@ class MediaRecord (context: Context,path:String,eglContext: EGLContext){
         mListener = listener
     }
 
-    public interface OnRecordFinishListener {
+     interface OnRecordFinishListener {
         fun onRecordFinish(path: String?)
     }
 
@@ -75,7 +75,7 @@ class MediaRecord (context: Context,path:String,eglContext: EGLContext){
         //用于其他线程 通知子线程
         mHandler = Handler(looper)
 
-        mHandler.post { //创建我们的子线程，用于把预览的图像存储到虚拟Diaplay中去。
+        mHandler?.post { //创建我们的子线程，用于把预览的图像存储到虚拟Diaplay中去。
             mEglBase = EGLBase(mContext, mWidth, mHeight, mInputSurface, mEglContext)
             //启动编码器
             mMediaCodec.start()
@@ -87,7 +87,7 @@ class MediaRecord (context: Context,path:String,eglContext: EGLContext){
     fun encoderFrame(textureId :Int, timestamp : Long){
         if(!isStart)
             return
-        mHandler.post { //把图像画到虚拟屏幕
+        mHandler?.post { //把图像画到虚拟屏幕
             mEglBase.draw(textureId, timestamp)
             //从编码器的输出缓冲区获取编码后的数据就ok了
             getCodec(false)
@@ -97,7 +97,7 @@ class MediaRecord (context: Context,path:String,eglContext: EGLContext){
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun stop() {
         isStart = false
-        mHandler.post {
+        mHandler?.post {
             getCodec(true)
             mMediaCodec.stop()
             mMediaCodec.release()
@@ -108,7 +108,7 @@ class MediaRecord (context: Context,path:String,eglContext: EGLContext){
             mEglBase.release()
            // mEglBase = null
             //mInputSurface = null
-            mHandler.looper.quitSafely()
+            mHandler?.looper?.quitSafely()
           //  mHandler = null
 
             //录制完成，通过回调借口回调出去 并把录制的视频地址传出去
